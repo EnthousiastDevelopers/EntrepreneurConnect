@@ -1,0 +1,161 @@
+<html>
+
+<head>
+    <title>Login - StartUp Dating</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
+    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js"></script>
+
+</head>
+
+<body ng-app="login" ng-controller="dbCtrl">
+    <div>
+        <p ng-bind-html="error_logs"></p>
+    </div>
+    <h1>Still Searching for a name of this site. Please wait... 99%</h1>
+    <div id="some_id" class="some_class" style="some_style">
+        <h1>{{ActiveMode}}</h1>
+        <!-- LOGIN -->
+        <form name="some_name" action="{form action link}" ng-if="ActiveMode=='Login'" method="post">
+
+            <label>Username or email address</label>:
+            <input id="id 1" class="class 1" ng-model="login.username" placeholder="" type="" value="" name="name 1" />
+            <br>
+            <label>Password</label>:
+            <input id="id 1" class="class 1" type="password" ng-model="login.password" placeholder="" type="input 1" value="" name="name 1" />
+            <br>
+            <input id="id 1" class="class 1" placeholder="" ng-click="login(login)" type="button" value="login" name="submit" />
+        </form>
+
+
+        <!-- SIGNUP -->
+        <form name="some_name" action="{form action link}" ng-if="ActiveMode=='Signup'" method="post">
+
+            <label>First Name:</label>
+            <input id="id 1" ng-model="signup.firstname" class="class 1" placeholder="" type="input 1" value="" name="name 1" />
+            <br>
+            <label>Last Name:</label>
+            <input id="id 1" ng-model="signup.lastname" class="class 1" placeholder="" type="input 1" value="" name="name 1" />
+            <br>
+            <label>Email address:</label>
+            <input id="id 1" ng-model="signup.email" class="class 1" placeholder="" type="input 1" value="" name="name 1" />
+            <br>
+            <label>Password:</label>
+            <input id="id 1" ng-model="signup.newpswd" class="class 1" placeholder="" type="password" value="" name="name 1" />
+            <br><label>Confirm password:</label>
+            <input id="id 1" ng-model="signup.confirmpswd" class="class 1" placeholder="" type="password" value="" name="name 1" />
+            <br>
+            <label>Username: (optional)</label>
+            <input id="id 1" class="class 1" placeholder="" ng-init="signup.username = signup.firstname+signup.lastname" ng-model="signup.username" type="input 1" value="" name="name 1" />
+            <br>
+            <input id="id 1" class="class 1" placeholder="" type="button" value="signup" name="submit" ng-click='signup(signup)' />
+        </form>
+    </div>
+    <h3><a href="#ThisAppIsSoGreat" ng-click='toggleMode()'>{{InactiveMode}} here</a></h3>
+
+</body>
+<script>
+    var fetch_bio = angular.module('login', ['ngSanitize']);
+
+    fetch_bio.controller('dbCtrl', ['$scope', '$http', function($scope, $http) {
+        $scope.ActiveMode = 'Login';
+        $scope.InactiveMode = 'Signup';
+
+        $scope.toggleMode = function() {
+
+            if ($scope.ActiveMode == 'Login') {
+                $scope.ActiveMode = 'Signup';
+                $scope.InactiveMode = 'Login';
+            } else {
+                $scope.ActiveMode = 'Login';
+                $scope.InactiveMode = 'Signup';
+            }
+        }
+
+
+        $scope.login = function(login) {
+		//	alert(login.username);
+           var config = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            };
+            $http.post('post.php', {
+                'action': 'login',
+                'uname': login.username,
+                'pswd': login.password,
+            }, config).success(function(data, status, headers, config) {
+                if (data.msg != '') {
+                 
+                    console.log(data);
+                    //$scope.error_logs = data;
+					if(data == 0) {
+                    window.location.href = 'profile.php';
+					}else if(data == 1){
+					alert( 'No user found');
+					} else if(data == 2) {
+					alert('wrong password');
+					}else {
+                    alert(data);
+					}
+                } else {
+                    console.log(data);
+                    //$scope.errors.push(data.error);
+                    alert('an error has occured while contacting the server');
+                }
+            }).error(function(data, status) { // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                alert('an error has occured while contacting the server');
+                $scope.errors.push(status);
+            });
+        }
+        
+		
+        $scope.signup = function(signup) {
+		if(signup.newpswd != signup.confirmpswd) {
+		alert('passwords don\'t match');
+	
+		return;
+		}
+            //alert(signup.newpswd);
+            var config = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            };
+			if(typeof(signup.username) == 'undefined') {
+signup.username = (signup.firstname+'.'+signup.lastname).replace(/ /g,'');
+			}
+
+            $http.post('post.php', {
+                'action': 'signup',
+                'uname': signup.username,
+                'email': signup.email,
+                'firstname': signup.firstname,
+                'lastname': signup.lastname,
+                'pswd': signup.newpswd,
+                'pictureid': '1'
+            }, config).success(function(data, status, headers, config) {
+                if (data.msg != '') {
+                    alert('done');
+                    console.log(data);
+                    $scope.error_logs = data;
+                    window.location.href = 'profile.php';
+                    // alert(data);
+                } else {
+                    console.log(data);
+                    $scope.errors.push(data.error);
+                    alert('an error has occured while contacting the server');
+                }
+            }).error(function(data, status) { // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                alert('an error has occured while contacting the server');
+                $scope.errors.push(status);
+            });
+        }
+
+    }]);
+</script>
+
+</html>
