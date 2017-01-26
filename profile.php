@@ -13,7 +13,7 @@ if(isset( $_GET["id"])){
     <title>Profile</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
-    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload.js"></script>
+    <script src="assets/js/ng-file-upload.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-filter/0.4.7/angular-filter.js"></script>
 	  <script src="https://code.angularjs.org/1.2.20/angular-route.min.js"></script>
@@ -43,7 +43,10 @@ if(isset( $_GET["id"])){
 	<h1>What are you looking for?</h1>
 	<span ng-hide="false">
 	<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1"  onClick='some_function()'/>
-	<label>I want to know myself and get business ideas</label></span>
+	<label>I have a business idea and I want to develop it</label></span>	<span ng-hide="false">
+	<br>
+	<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1"  onClick='some_function()'/>
+	<label>I want to know myself</label></span>
 	<br>
 	<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1"  onClick='some_function()'/>
 	<label>I want to build a team for my business</label>
@@ -59,23 +62,101 @@ if(isset( $_GET["id"])){
 	<div id="search" >
 	<h1>Search</h1>
 	<h2>Search people by personality</h2>
-	<table  class="table table-hover">
-	<tr><th>Criteria</th><th></th><th>Keyword</th><th></th><th>Search</th></tr>
+<h3>Bio search</h3>	
+	<ul >
+	<li ><span>
+	<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1" ng-checked="true"  ng-model='all_bio_search'/></span><span>All Bio<span></li>
+
+		<li ng-hide="all_bio_search" ng-repeat="item in bio"><span>
+	<input id = "id 1" class="class 1" ng-checked="true" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1"   onClick='some_function()'/></span><span>{{item.Title}}</span></li>
+	</ul>
 	
-	<tr ng-repeat="item in bio"><td>{{item.Title}}</td><td>
-	<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1"  onClick='some_function()'/></td><td><input id = "id 1" class="class 1" placeholder="your placeholder 1" type="input 1" value="" name = "name 1"  onClick=''/></td><td><input type="button" value="Add" onClick=''/></td><td></td></tr>
+<a href="#DeepBioSearch" ng-hide="advanced_bio_search" ng-click="advanced_bio_search = true">Advanced bio search</a>	
+<a href="#DeepBioSearch" ng-show="advanced_bio_search" ng-click="advanced_bio_search = false">Quick bio search</a>	
+
+<h3>Rating search</h3>	
+<span><input type="checkbox" ng-model="has_set_minimum_rating">Set minimum ratings</span>
+	<ul >
+	<li ><span ng-show="has_set_minimum_rating">
+	<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1" ng-checked="true"  ng-model='all_rating_search'/></span><span>All Ratings<span></li>
+
+		<li ng-hide="all_rating_search" ng-repeat="item in ratings"><span>
+	<input id = "id 1" class="class 1" ng-checked="true" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1"   onClick='some_function()'/></span><span>{{item.Title}}</span></li>
+	</ul>
+	
+	<div id="toogle quick and advanced rating" ng-show="has_set_minimum_rating">
+<a href="#DeepBioSearch" ng-hide="advanced_rating_search" ng-click="advanced_rating_search = true">Advanced rating search</a>	
+<a href="#DeepBioSearch" ng-show="advanced_rating_search" ng-click="advanced_rating_search = false">Quick rating search</a>	
+</div>
+	
+	
+	
+	<div id="advanced_bio_search">
+	<table ng-show="advanced_bio_search" class="table table-hover">
+	
+	<tr><th>Criteria</th><th ng-hide="true" ></th><th>Keyword</th><th></th><th ng-show="true">Search</th></tr>
+	
+	<tr ng-repeat="item in bio"><td>{{item.Title}}</td><td  ng-hide="true" >
+	<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1"  onClick='some_function()'/></td><td  ><input id = "id 1" class="class 1" placeholder="your placeholder 1" type="input 1" value="" name = "name 1"  onClick='' ng-show="item"/></td><td ng-show="true"><input  type="button" value="Add" onClick=''/></td><td></td></tr>
 	</table>
-	<h2>Search people by ratings</h2>
-	<table  class="table table-hover">
-	<tr><th>Criteria</th><th></th><th>Keyword</th><th></th><th>Search</th></tr>
-	
-	<tr ng-repeat="item in ratings"><td>{{item.Title}}</td><td>
-	<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="People" name = "name 1"  onClick='some_function()'/></td><td><input id = "id 1" class="class 1" placeholder="your placeholder 1" type="input 1" value="" name = "name 1"  onClick=''/></td><td><input type="button" value="Add" onClick=''/></td><td></td></tr>
-	</table>
-	<input width="600" type = "button" value="Search"/>
-	
-	
 	</div>
+	
+	
+	
+<div = "advanced_rating_search">
+	<table ng-show="advanced_rating_search" class="table table-hover">
+	<tr><th>Criteria</th><th>Keyword</th><th></th><th>Search</th></tr>
+	
+	<tr ng-repeat="item in ratings"><td>{{item.Title}}</td><td><input id = "id 1" class="class 1" placeholder="your placeholder 1" type="input 1" value="" name = "name 1"  onClick=''/></td><td><input type="button" value="Add" onClick=''/></td><td></td></tr>
+	</table>
+	</div>
+	<span ng-hide="advanced_bio_search">Value is:<input ng-model="quick_search_value" width="600" type = "text" placeholder="Value to search" /></span>
+	<br>
+	<span ng-show="has_set_minimum_rating">and <br>
+	<span ng-show="!advanced_rating_search"> Minimum rating: <input ng-model="quick_search_rating"  width="600" type = "text"  type="range" value="4" min="0"  max="5"  step=".5"/></span></span>
+	<br>
+	<input width="600" type = "button" ng-click= "search()"; value="Search"/>
+
+	
+	
+	<div id="results">
+	<span ng-hide="hasSearched">Press the search button to display  results</span>
+	<div ng-show="hasSearched" id="resut">
+	<h2 >{{numberOfResults}}Results</h2>
+	No results.
+	
+	<div ng-repeat="person in  searchresult | orderBy : '-Rate'">
+	<a href="profile.php?id={{person.ID}}">
+	<h2>{{$index+1}} - {{person.FirstName}} {{person.LastName}}<span ng-if="person.ID == myid">(you)</span></h2>
+	
+		
+		
+	  <img src="{{person.PictureUrl}}" alt="image"  height="100" align="left"  />
+		  {{person.status}}
+		  <h3>
+		 <span ng-if="person.Rate!=0">{{person.Rate}} out of 5</span>
+		 <span ng-if="person.Rate==0"> Be the first to rate this person</span><br>
+			</h3>
+		  	{{person.ReviewCount}} Review(s). 
+	  </a>
+	  	<div>
+		<h3>Skills:</h3>
+		<div>{{person.VALUESPRO}}</div>		
+		</div>
+	<br>
+	<br>
+	<br>
+	</div>
+    </div>
+	
+	
+	<br>
+	<span ng-if="searchresult !==undefined">
+	Do you want to be notified if we find this person later? <br>Yes<input id = "id 1" class="class 1" placeholder="your placeholder 1" type="checkbox" value="input 2" name = "name 1"  onClick=''/>
+	</span>
+	</div>
+	</div>
+	</div> <!--End SEARCH-->
     
 	
 	<div id="explore" ng-if="Mode=='Explore'">
@@ -334,11 +415,27 @@ if(isset( $_GET["id"])){
 //id: the current opened profile id
 //$scope.ratings : initialised array of ratings, but become ratings of the logged user on the opened profile if edit my ratings is clicked
 
-    var fetch_bio = angular.module('fetch_bio', ['ngRoute','angular.filter','ngFileUpload', 'ngSanitize']);
+    var fetch_bio = angular.module('fetch_bio', ['ngRoute','angular.filter','ngSanitize']);
+     var fetch_bio = angular.module('fetch_bio', ['ngRoute','angular.filter','ngFileUpload', 'ngSanitize']);
 
-    fetch_bio.controller('dbCtrl', ['$scope', '$http', 'Upload','$route', function($scope, $http, Upload, $route) {
+     fetch_bio.controller('dbCtrl', ['$scope', '$http', 'Upload','$route', function($scope, $http, Upload, $route) {
+   // fetch_bio.controller('dbCtrl', ['$scope', '$http','$route', function($scope, $http, $route) {
 
 
+///<----DIRECTIVE--->///
+fetch_bio.directive('myTextHighlither', function() {
+    return {
+      restrict: 'A',
+      template: '<div><span ng-repeat="word in words" class="single-word" ng-click="highlight($event)">{{word}}</span></div>',
+      link: function($scope, $element) {
+        $scope.words = $element.attr('words').split(' ');
+        $scope.highlight = function(event) {
+          angular.element(event.target).toggleClass('highlight');
+        };
+      }
+    };
+  });
+///<----/DIRECTIVE--->///
 ///<----EXPLORE--->///
 	$scope.getDataPeople = function (){
 				
@@ -449,6 +546,80 @@ if(isset( $_GET["id"])){
             });
 			}
 ///<----/EXPLORE--->///
+///<----SEARCH--->///
+
+$scope.all_bio_search = true;
+$scope.all_rating_search = true;
+
+$scope.advanced_bio_search = false;
+$scope.advanced_rating_search = false;
+
+$scope.hasSearched = false;
+$scope.has_set_minimum_rating = false;
+
+$scope.quick_search_value = 'yo';
+$scope.quick_search_rating = 4;
+
+
+$scope.search = function () {
+	$scope.hasSearched = true;
+		var search_value;
+		var search_rating;
+	if(!$scope.advanced_bio_search) {
+		if($scope.all_bio_search){
+			search_value = $scope.quick_search_value;
+			alert($scope.quick_search_value);
+		}else {
+			//
+		}//if quick search but bio filtered
+	}else {
+		
+	}//end if advanced bio search
+	if($scope.has_set_minimum_rating) {
+	if(!$scope.advanced_rating_search) {
+		if($scope.all_rating_search){
+			search_rating = $scope.quick_search_rating;
+			alert($scope.quick_search_rating);
+		}else {
+			//
+		}//if quick search but rating filtered
+	}else {
+		
+	}//end if advanced rating search
+  } //end if has_set_minimum_rating
+  
+  //searchpost
+     var config = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            };
+			
+	 $http.post('search.php', {
+                'searchvalue': $scope.quick_search_value,
+                'searchrating': $scope.quick_search_rating,
+                'action': 'quicksearch'
+            }, config).success(function(data, status, headers, config) {
+                if (data.msg != '') {
+					
+                  $scope.searchresult = data;
+                 // $scope.error_logs = data;
+				console.log(data);
+                    // alert(data);
+                } else {
+                    $scope.errors.push(data.error);
+                    throw new Error("my error message");
+                    alert('an error has occured while contacting the server');
+                }
+            }).error(function(data, status) { // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                throw new Error("my error message");
+                alert('an error has occured while contacting the server');
+                $scope.errors.push(status);
+            });
+	
+}
+///<----/SEARCH--->///
 
 // alert(id);
 

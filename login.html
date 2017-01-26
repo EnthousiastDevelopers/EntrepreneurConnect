@@ -135,7 +135,7 @@ signup.username = (signup.firstname+'.'+signup.lastname).replace(/ /g,'');
                 'firstname': signup.firstname,
                 'lastname': signup.lastname,
                 'pswd': signup.newpswd,
-                'pictureid': '1'
+                'pictureid': '264' //264 is the id of the base profile picture
             }, config).success(function(data, status, headers, config) {
                 if (data.msg != '') {
                     alert('done');
