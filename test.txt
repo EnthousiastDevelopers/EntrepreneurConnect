@@ -1,8 +1,4 @@
 <html>
-<<<<<<< HEAD
-<div class="eli"></div>
+<div class="bold">Eli</div>
 
-=======
-<div>Tolotra</div>
->>>>>>> origin/master
 </html>
