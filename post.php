@@ -21,12 +21,47 @@ $id = $request->id;
 echo mysqli_affected_rows($conn);
 }
 
+
+if($action=='update_opened_chats') {
+	require 'config.php';
+$myid = $request->myid;
+$arrayID = $request->Interlocuter;
+// print_r($arrayID);
+// $arrayID = array(15, 16,19);
+$sql = "SELECT * FROM messages where (`FromID` IN (".implode(',',$arrayID).") AND ToID='$myid' AND Status = '0')";
+
+// echo  implode(',',$arrayID);
+// echo  $sql;
+$result = $conn -> query ($sql);
+$data = array();
+while ($row = mysqli_fetch_array($result)){	
+$data[] = $row;
+}
+print json_encode($data);
+//SET MESSAGE AS SEEN
+$sql_update = "UPDATE messages SET Status = 1 where (`FromID` IN (".implode(',',$arrayID).") AND ToID='$myid' AND Status = '0')";
+mysqli_query($conn, $sql_update);	
+}
+
+
+
+
 if($action == 'updatePicture'){
 	$id = $request->id;
 $value = $request->PictureID;
 $me = $id;
   require 'config.php';
   mysqli_query($conn, "UPDATE  users SET PictureID = '$value' WHERE ID='$me'");	
+
+echo mysqli_affected_rows($conn);
+}
+
+if($action == 'updatePreference'){
+	$id = $request->id;
+$value = $request->preferenceID;
+$me = $id;
+  require 'config.php';
+  mysqli_query($conn, "UPDATE  users SET FirstInterest = '$value' WHERE ID='$me'");	
 
 echo mysqli_affected_rows($conn);
 }
@@ -67,6 +102,25 @@ if (mysqli_query($conn, $sql)) {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
 }
+
+
+if ($action == 'sendMessage') {
+$FromID = $request->FromID;
+$ToID = $request->ToID;
+$Value = $request->Value;
+  require 'config.php';
+$Value = mysqli_real_escape_string($conn, $Value);	
+  
+//inserting data
+$sql = "INSERT INTO messages (FromID,ToID,Value) VALUES ('$FromID','$ToID','$Value')";
+
+if (mysqli_query($conn, $sql)) {
+echo '1';
+} else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+}
+
 
 
 
@@ -168,6 +222,7 @@ echo '1';
 
 
 if ($action == 'signup') {
+session_start();
   require 'config.php';
 	//print_r($request);
 $username = $request->uname;

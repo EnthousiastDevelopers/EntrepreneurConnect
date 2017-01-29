@@ -17,7 +17,7 @@
     <div id="some_id" class="some_class" style="some_style">
         <h1>{{ActiveMode}}</h1>
         <!-- LOGIN -->
-        <form name="some_name" action="{form action link}" ng-if="ActiveMode=='Login'" method="post">
+        <form name="some_name" ng-submit="login(login)"  ng-if="ActiveMode=='Login'" method="post">
 
             <label>Username or email address</label>:
             <input id="id 1" class="class 1" ng-model="login.username" placeholder="" type="" value="" name="name 1" />
@@ -25,7 +25,7 @@
             <label>Password</label>:
             <input id="id 1" class="class 1" type="password" ng-model="login.password" placeholder="" type="input 1" value="" name="name 1" />
             <br>
-            <input id="id 1" class="class 1" placeholder="" ng-click="login(login)" type="button" value="login" name="submit" />
+            <input id="id 1" class="class 1" placeholder="" ng-click="login(login)" type="submit" value="login" name="submit" />
         </form>
 
 
@@ -75,7 +75,10 @@
 
 
         $scope.login = function(login) {
-		//	alert(login.username);
+		if(typeof(login.username )=='undefined' || typeof(login.password )=='undefined'){
+			login.username = '';
+			login.password = '';
+		}
            var config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -89,9 +92,9 @@
                 if (data.msg != '') {
                  
                     console.log(data);
-                    //$scope.error_logs = data;
+                    $scope.error_logs = data;
 					if(data == 0) {
-                    window.location.href = 'profile.php';
+                    window.location.href = 'index.php';
 					}else if(data == 1){
 					alert( 'No user found');
 					} else if(data == 2) {
@@ -141,7 +144,7 @@ signup.username = (signup.firstname+'.'+signup.lastname).replace(/ /g,'');
                     alert('done');
                     console.log(data);
                     $scope.error_logs = data;
-                    window.location.href = 'profile.php';
+                    window.location.href = 'index.php';
                     // alert(data);
                 } else {
                     console.log(data);
